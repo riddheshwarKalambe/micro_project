@@ -4,6 +4,7 @@ import com.lcwd.user.service.entites.Hotel;
 import com.lcwd.user.service.entites.Rating;
 import com.lcwd.user.service.entites.User;
 import com.lcwd.user.service.exception.ResourceNotFoundException;
+import com.lcwd.user.service.external.services.HotelService;
 import com.lcwd.user.service.repository.UserRepository;
 import com.lcwd.user.service.services.UserService;
 import org.slf4j.Logger;
@@ -27,6 +28,10 @@ public class UserServiceIMpl implements UserService {
 
     @Autowired
     private RestTemplate restTemplate;
+
+
+    @Autowired
+    private HotelService hotelService;
 
 
     private Logger logger = LoggerFactory.getLogger(UserServiceIMpl.class);
@@ -63,9 +68,10 @@ public class UserServiceIMpl implements UserService {
             // api call to hotel service to get the hotel
 
           //  http://localhost:8082/hotels/d2c65e6d-d038-40f9-95c9-a120884da164
-            ResponseEntity<Hotel> forEntity = restTemplate.getForEntity("http://HOTELSERVICE/hotels/"+rating.getHotelId(), Hotel.class);
-            Hotel hotel = forEntity.getBody();
-            logger.info("response status code: {} ", forEntity.getStatusCode());
+           // ResponseEntity<Hotel> forEntity = restTemplate.getForEntity("http://HOTELSERVICE/hotels/"+rating.getHotelId(), Hotel.class);
+
+            Hotel hotel = hotelService.getHotel(rating.getHotelId());// above rating to find hotels of perticular ratings
+          //  logger.info("response status code: {} ", forEntity.getStatusCode());
 
             // set the hotel to rating
             rating.setHotel(hotel);
