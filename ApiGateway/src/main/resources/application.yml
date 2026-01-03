@@ -21,7 +21,7 @@ spring:
         - id: hotel-service
           uri: lb://HOTELSERVICE
           predicates:
-            - Path=/hotels/**
+            - Path=/hotels/**, /staffs/**
 
 eureka:
   instance:
